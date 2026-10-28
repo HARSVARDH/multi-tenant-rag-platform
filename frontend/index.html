@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enterprise AI Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-logo">AG</div>
+        <div class="brand-text">Antigravity AI</div>
+      </div>
+      <nav class="nav-menu">
+        <a href="#auth" class="nav-item active" id="nav-auth">
+          <span class="icon">🔑</span>
+          <span>Authentication</span>
+        </a>
+        <a href="#documents" class="nav-item locked" id="nav-documents">
+          <span class="icon">📁</span>
+          <span>Documents</span>
+        </a>
+        <a href="#search" class="nav-item locked" id="nav-search">
+          <span class="icon">🔎</span>
+          <span>Q&A Search</span>
+        </a>
+        <a href="#evaluation" class="nav-item locked" id="nav-evaluation">
+          <span class="icon">📈</span>
+          <span>Evaluation</span>
+        </a>
+      </nav>
+      <div class="user-status" id="sidebar-user-status">
+        <span class="status-dot offline"></span>
+        <span class="status-text">Not Authenticated</span>
+      </div>
+    </aside>
+
+    <!-- Main Workspace -->
+    <main class="workspace">
+      <!-- Top header bar -->
+      <header class="topbar">
+        <h1 id="page-title">Enterprise AI Platform</h1>
+        <div class="user-profile" id="user-profile-header" style="display: none;">
+          <span class="user-avatar" id="header-avatar">U</span>
+          <span class="user-name" id="header-username">Guest</span>
+          <button class="btn btn-secondary logout-btn" id="logout-btn">Log Out</button>
+        </div>
+      </header>
+
+      <!-- View Containers -->
+      <div class="view-content">
+        <!-- Toast Container -->
+        <div id="toast-container" class="toast-container"></div>
+
+        <!-- Section: Authentication -->
+        <section id="view-auth" class="view-pane active">
+          <div class="auth-card-wrapper">
+            <div class="auth-card glass-panel">
+              <div class="tabs">
+                <button class="tab-btn active" id="tab-login">Login</button>
+                <button class="tab-btn" id="tab-register">Register</button>
+              </div>
+
+              <!-- Login Form -->
+              <form id="form-login" class="auth-form active">
+                <h2>Welcome Back</h2>
+                <p>Sign in to access your secure knowledge base</p>
+                <div class="form-group">
+                  <label for="login-email">Email Address</label>
+                  <input type="email" id="login-email" required placeholder="name@company.com">
+                </div>
+                <div class="form-group">
+                  <label for="login-password">Password</label>
+                  <input type="password" id="login-password" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn btn-primary w-full">Sign In</button>
+              </form>
+
+              <!-- Register Form -->
+              <form id="form-register" class="auth-form">
+                <h2>Create Account</h2>
+                <p>Register to start uploading documents safely</p>
+                <div class="form-group">
+                  <label for="reg-name">Full Name</label>
+                  <input type="text" id="reg-name" required placeholder="John Doe">
+                </div>
+                <div class="form-group">
+                  <label for="reg-email">Email Address</label>
+                  <input type="email" id="reg-email" required placeholder="name@company.com">
+                </div>
+                <div class="form-group">
+                  <label for="reg-password">Password</label>
+                  <input type="password" id="reg-password" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn btn-primary w-full">Sign Up</button>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Documents -->
+        <section id="view-documents" class="view-pane">
+          <div class="grid-2col">
+            <!-- Left Col: Ingestion Form -->
+            <div class="glass-panel panel-padding">
+              <h2>Upload Documents</h2>
+              <p class="section-desc">Supported formats: PDF, DOCX, TXT, Markdown. Files are securely split, chunked, and vectorized.</p>
+              
+              <div class="dropzone" id="dropzone">
+                <div class="dropzone-content">
+                  <span class="dropzone-icon">📤</span>
+                  <p class="dropzone-text">Drag & drop your files here or click to browse</p>
+                  <input type="file" id="file-input" accept=".pdf,.docx,.txt,.md" style="display: none;">
+                </div>
+              </div>
+
+              <div id="upload-status-wrapper" class="upload-status-wrapper" style="display: none;">
+                <div class="upload-progress-info">
+                  <span class="upload-filename" id="upload-filename">document.pdf</span>
+                  <span class="upload-percent" id="upload-percent">0%</span>
+                </div>
+                <div class="progress-bar-container">
+                  <div class="progress-bar-fill" id="upload-progress-fill"></div>
+                </div>
+              </div>
+
+              <button class="btn btn-primary w-full mt-4" id="upload-btn" disabled>Ingest Document</button>
+            </div>
+
+            <!-- Right Col: Document List -->
+            <div class="glass-panel panel-padding flex-column">
+              <h2>Your Files</h2>
+              <p class="section-desc">Indexed documents linked to your workspace</p>
+              <div class="document-list" id="document-list">
+                <div class="empty-state">No documents uploaded yet</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Search / Q&A -->
+        <section id="view-search" class="view-pane">
+          <div class="search-layout">
+            <!-- Search settings bar -->
+            <div class="glass-panel search-options-panel">
+              <div class="search-controls">
+                <div class="control-group">
+                  <label for="search-type">Search Engine</label>
+                  <select id="search-type" class="form-input">
+                    <option value="hybrid">Hybrid (RRF Fusion)</option>
+                    <option value="vector">Dense Semantic (Qdrant)</option>
+                    <option value="keyword">Sparse Keyword (BM25)</option>
+                  </select>
+                </div>
+                <div class="control-group">
+                  <label for="search-limit">Max Chunks</label>
+                  <input type="number" id="search-limit" value="5" min="1" max="20" class="form-input">
+                </div>
+                <div class="control-group checkbox-group">
+                  <label for="search-rerank">
+                    <input type="checkbox" id="search-rerank" checked>
+                    <span>Rerank Results</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Q&A Box -->
+            <div class="glass-panel panel-padding search-container">
+              <h2>Ask Knowledge Base</h2>
+              <div class="search-input-wrapper">
+                <input type="text" id="query-input" placeholder="What are the key terms in my loaded documents?">
+                <button class="btn btn-primary" id="query-btn">Ask AI</button>
+              </div>
+
+              <!-- Answer container -->
+              <div class="answer-output-wrapper" id="answer-output-wrapper" style="display: none;">
+                <div class="answer-header">Answer</div>
+                <div class="answer-body" id="answer-body">Generating...</div>
+                
+                <div class="citations-header">Source Documents Cited</div>
+                <div class="citations-list" id="citations-list"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Evaluation -->
+        <section id="view-evaluation" class="view-pane">
+          <div class="grid-2col">
+            <!-- Retrieval metrics -->
+            <div class="glass-panel panel-padding">
+              <h2>Search Accuracy Evaluation</h2>
+              <p class="section-desc">Calculate system Hit Rate and Mean Reciprocal Rank (MRR) using test cases.</p>
+              
+              <div class="form-group">
+                <label>Test Dataset (JSON array)</label>
+                <textarea id="eval-retrieval-json" class="code-textarea" rows="8">[
+  {
+    "query": "quick brown fox",
+    "expected_document_ids": []
+  }
+]</textarea>
+                <small class="help-text">Input query and expected document UUIDs. Populate document list to get valid UUIDs.</small>
+              </div>
+              <button class="btn btn-primary mt-2" id="run-retrieval-eval-btn">Run Search Evaluation</button>
+
+              <div id="retrieval-eval-results" class="eval-results-box" style="display: none;">
+                <div class="metric-card">
+                  <span class="metric-label">Hit Rate</span>
+                  <span class="metric-value" id="val-hit-rate">0.0%</span>
+                </div>
+                <div class="metric-card">
+                  <span class="metric-label">MRR</span>
+                  <span class="metric-value" id="val-mrr">0.00</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Generation metrics -->
+            <div class="glass-panel panel-padding">
+              <h2>Generation Quality Judge</h2>
+              <p class="section-desc">Assess faithfulness (lack of hallucination) and question relevance using LLM-as-a-judge.</p>
+              
+              <div class="form-group">
+                <label for="eval-gen-query">Query</label>
+                <input type="text" id="eval-gen-query" class="form-input" placeholder="The original question">
+              </div>
+              <div class="form-group">
+                <label for="eval-gen-context">Retrieved Context</label>
+                <textarea id="eval-gen-context" class="form-input" placeholder="The supporting text snippet used..."></textarea>
+              </div>
+              <div class="form-group">
+                <label for="eval-gen-answer">System Answer</label>
+                <textarea id="eval-gen-answer" class="form-input" placeholder="The answer generated by the model..."></textarea>
+              </div>
+              <button class="btn btn-primary mt-2" id="run-gen-eval-btn">Score Answer Quality</button>
+
+              <div id="gen-eval-results" class="eval-results-box" style="display: none;">
+                <div class="metric-card">
+                  <span class="metric-label">Faithfulness</span>
+                  <span class="metric-value" id="val-faithfulness">0.0%</span>
+                </div>
+                <div class="metric-card">
+                  <span class="metric-label">Answer Relevance</span>
+                  <span class="metric-value" id="val-relevance">0.0%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

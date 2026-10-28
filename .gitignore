@@ -1,0 +1,16 @@
+backend/data/
+.env
+.env.*
+!.env.example
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+node_modules/
+qdrant_storage/
+backend/uploads/
+.DS_Store
+terraform.tfstate*
+.terraform/
+*.tfvars
