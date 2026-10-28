@@ -1,0 +1,51 @@
+{
+  "dataset": "scifact",
+  "corpus_size": 5183,
+  "num_queries": 300,
+  "embedding_model": "BAAI/bge-small-en-v1.5",
+  "reranker": "Xenova/ms-marco-MiniLM-L-6-v2",
+  "results": {
+    "bm25": {
+      "hit@5": 0.7567,
+      "mrr@5": 0.6132,
+      "ndcg@10": 0.6519,
+      "recall@10": 0.774
+    },
+    "dense": {
+      "hit@5": 0.7867,
+      "mrr@5": 0.6752,
+      "ndcg@10": 0.7203,
+      "recall@10": 0.8452
+    },
+    "hybrid_rrf": {
+      "hit@5": 0.7867,
+      "mrr@5": 0.6683,
+      "ndcg@10": 0.7203,
+      "recall@10": 0.8639
+    },
+    "hybrid_rrf+rerank(Xenova/ms-marco-MiniLM-L-6-v2)": {
+      "hit@5": 0.7867,
+      "mrr@5": 0.6617,
+      "ndcg@10": 0.7082,
+      "recall@10": 0.8526
+    }
+  },
+  "median_latency_ms": {
+    "bm25": 1924.0,
+    "dense": 42.8,
+    "hybrid_rrf": 2027.2,
+    "hybrid_rrf+rerank(Xenova/ms-marco-MiniLM-L-6-v2)": 3645.6
+  },
+  "rerank_calls": {
+    "cohere": 0,
+    "openai": 0,
+    "local": 300,
+    "none": 0
+  },
+  "tenant_isolation": {
+    "decoy_docs_in_other_tenant": 283,
+    "queries_checked": 1200,
+    "leaked_results": 0
+  },
+  "run_at": "2026-10-28 13:08:33"
+}
