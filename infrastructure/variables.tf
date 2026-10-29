@@ -26,14 +26,17 @@ variable "db_password" {
   description = "Password for the RDS PostgreSQL database"
   type        = string
   sensitive   = true
-  default     = "SuperSecurePassword123!"
+
+  validation {
+    condition     = length(var.db_password) >= 16
+    error_message = "db_password must be at least 16 characters."
+  }
 }
 
 variable "openai_api_key" {
   description = "OpenAI API Key for embeddings and RAG evaluation"
   type        = string
   sensitive   = true
-  default     = "sk-placeholder"
 }
 
 variable "cohere_api_key" {
@@ -47,5 +50,9 @@ variable "jwt_secret_key" {
   description = "JWT authentication signing key"
   type        = string
   sensitive   = true
-  default     = "super-secret-jwt-signing-key-for-production"
+
+  validation {
+    condition     = length(var.jwt_secret_key) >= 32
+    error_message = "jwt_secret_key must be at least 32 characters."
+  }
 }

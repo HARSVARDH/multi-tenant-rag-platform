@@ -1,0 +1,7 @@
+# Copy to terraform.tfvars (gitignored) and fill in, or pass as TF_VAR_* env vars.
+# Generate secrets with: openssl rand -base64 32
+
+db_password    = ""
+openai_api_key = ""
+jwt_secret_key = ""
+cohere_api_key = "" # optional
